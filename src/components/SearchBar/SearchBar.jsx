@@ -15,6 +15,9 @@ function SearchBar () {
                 <div>
                     <button type="submit">Search</button>
                 </div>
+                <div>
+                    <button type="submit">Save to Spotify</button>
+                </div>
             </form>
         </div>
     )
