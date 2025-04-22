@@ -1,4 +1,4 @@
-
+import './SearchResults.css';
 
 function SearchResults () {
 

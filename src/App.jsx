@@ -1,5 +1,6 @@
-import SearchBar from './components/SearchBar/SearchBar'
-import './App.css'
+import SearchBar from './components/SearchBar/SearchBar';
+import './App.css';
+import Tracklist from './components/Tracklist/Tracklist';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <h1>Jammming</h1>
       <div>
         <SearchBar />
+        <Tracklist />
       </div>
 
     </>
