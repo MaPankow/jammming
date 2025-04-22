@@ -1,26 +1,38 @@
 import './SearchBar.css';
+import { useState } from 'react';
 
-function SearchBar () {
+
+
+function SearchBar ({ searchSpotify }) {
+
+    const[title, setTitle] = useState("");
+
+    const handleTitle = (e) => {
+        setTitle(e.target.value);
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        searchSpotify(title);
+    }
 
     return (
         <div>
             <h2>
                 Find your favourite tracks and add them to the playlist
             </h2>
-            <form className="form">
-                <div className="inpuField">
+            <form className="form" onSubmit={handleSearch}>
+                <div className="inputField">
                     <label htmlFor="tracksearch">Browse tracks: </label>
-                    <input type="text" id="tracksearch" />
+                    <input type="text" id="tracksearch" onChange={handleTitle} />
                 </div>
                 <div>
                     <button type="submit">Search</button>
                 </div>
-                <div>
-                    <button type="submit">Save to Spotify</button>
-                </div>
+
             </form>
         </div>
-    )
+    );
 }
 
 export default SearchBar;

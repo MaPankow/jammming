@@ -1,17 +1,12 @@
 import './Track.css';
 
-const track = {
-    songTitle: "Uprising",
-    artist: "Muse",
-    album: "The Resistance"
-    
-};
 
-function Track () {
+
+function Track ({ track }) {
     return (
         <div className="songContainer">
             <div className="songTitle">
-                <p>{track.songTitle}</p>
+                <p>{track.title}</p>
             </div>
             <div className="artist">
                 <p>{track.artist}</p>
