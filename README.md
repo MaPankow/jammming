@@ -43,3 +43,26 @@ If you are developing a production application, we recommend using TypeScript an
 
 ### SearchBar.jsx
 Hier erstelle ich zunächst das Formular mit Suchfeld und Button.
+
+### Track.jsx
+Zunächst sollen nur der Titel, Artist und Album eines Tracks dargestellt werden. Kann später noch erweitert werden.
+
+### Tracklist.jsx 
+Dient als Grundlage für sämtliche Aufzählungen von Tracks, wie hier bei den SearchResults und bei der Playlist.
+
+### SearchResults.jsx
+Nachdem per Titel gesucht worden ist, werden die Ergebnisse angezeigt.
+
+### Playlist.jsx
+
+### ThemeToggle
+Stellt einen Button zur Verfügung, mit dem von Light- in den Darkmode gewechselt werden kann. Emojis können direkt im Code verwendet werden. Bei https://emojipedia.org kann man sie zum Beispiel finden und kopieren.
+
+## Styling
+Zu jeder Komponente kommt eine extra CSS-Datei. Zunächst habe ich Ordner für die Kompnenten angelegt, in die einmal die jsx-Datei und eine css-Datei kommen. 
+
+### CSS-Module
+Ich habe gelernt, dass es besser ist, module.css bei den Komponenten zu verwenden, um so Verwirrungen mit Namensgebungen zu vermeiden, wenn ich lokal in den Komponenten etwas ändern möchte. 
+
+### index.css
+Bleibt eine "normale" CSS-Datei und legt globale Angaben fest, wie Hintergrund und Aussehen im Light- und Darkmode etwa.

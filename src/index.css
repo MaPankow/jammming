@@ -21,6 +21,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html.light {
+  --color-text: #213547;
+  --color-bg: #ffffff;
+  --color-link-hover: #5d63d3;
+  --color-button-bg: #f9f9f9;
+  --color-button-text: #1a1a1a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: #213547;
+    --color-bg: #ffffff;
+    --color-link-hover: #5d63d3;
+    --color-button-bg: #f9f9f9;
+    --color-button-text: #1a1a1a;
+  }
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 a {
   font-weight: 500;
   color: var(--color-link);
@@ -40,6 +64,8 @@ body {
   background-color: var(--color-bg);
 }
 
+
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -53,6 +79,7 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -62,22 +89,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-text: #213547;
-    --color-bg: #ffffff;
-    --color-link-hover: #5d63d3;
-    --color-button-bg: #f9f9f9;
-
-    color: var(--color-text);
-    background-color: var(--color-bg);
-  }
-  a:hover {
-    color: var(--color-link-hover);
-  }
-  button {
-    background-color: var(--color-button-bg);
-  }
 }

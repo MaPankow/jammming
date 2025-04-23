@@ -1,7 +1,7 @@
 import SearchBar from './components/SearchBar/SearchBar';
-import './App.css';
+import styles from './App.module.css';
 import SearchResults from './components/SearchResults/SearchResults';
-import Tracklist from './components/Tracklist/Tracklist';
+import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 
 
 
@@ -26,10 +26,11 @@ function App() {
 
   return (
     <>
-      <div>
+      <div >
         {/* Logos, Hintergründe etc */}
       </div>
       <h1>Jammming</h1>
+      <ThemeToggle />
       <div>
         <SearchBar searchSpotify={searchSpotify} />
         <SearchResults tracks={tracks} />
