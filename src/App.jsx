@@ -30,7 +30,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className={styles.appWrapper}>
       <div >
         {/* Logos, Hintergründe etc */}
       </div>
@@ -38,12 +38,18 @@ function App() {
       <ThemeToggle />
       <div>
         <SearchBar searchSpotify={searchSpotify} />
-        <SearchResults tracks={tracks} />
-        <Playlist />
-        <SaveToSpotify saveToSpotify={saveToSpotify}/>
+        <div className={styles.container}>
+          <div className={styles.column}>
+          <SearchResults tracks={tracks} />
+          </div>
+          <div className={styles.column}>
+            <Playlist />
+            <SaveToSpotify saveToSpotify={saveToSpotify}/>
+          </div>
+        </div>
       </div>
 
-    </>
+    </div>
   )
 }
 

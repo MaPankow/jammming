@@ -20,6 +20,7 @@ function Playlist () {
     
 };
 
+// in eine extra Komponente auslagern
 function SaveToSpotify ({saveToSpotify}) {
     const handleSubmit = (e) => {
         e.preventDefault();
