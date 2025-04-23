@@ -2,7 +2,7 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './App.module.css';
 import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
-
+import { Playlist, SaveToSpotify } from './components/Playlist/Playlist';
 
 
 const tracks = [
@@ -24,6 +24,11 @@ function App() {
     console.log(`Searching Spotify with ${title}`);
   }
 
+  const saveToSpotify = (playlist) => {
+    playlist = "My Playlist";
+    console.log(`Saved ${playlist} to Spotify`);
+  }
+
   return (
     <>
       <div >
@@ -34,6 +39,8 @@ function App() {
       <div>
         <SearchBar searchSpotify={searchSpotify} />
         <SearchResults tracks={tracks} />
+        <Playlist />
+        <SaveToSpotify saveToSpotify={saveToSpotify}/>
       </div>
 
     </>

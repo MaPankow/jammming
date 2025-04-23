@@ -12,11 +12,7 @@ function SearchResults ({ tracks }) {
             <h2>Search Results</h2>
             <Tracklist tracks={tracks} />
 
-            <form className="form" onSubmit={handleSearch}>
-                <div>
-                    <button type="submit">Save to Spotify</button>
-                </div>
-            </form>
+            
         </div>
     );
 }
