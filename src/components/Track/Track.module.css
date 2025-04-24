@@ -1,0 +1,21 @@
+.songContainer {
+    background-color: var(--color-tracktiles);
+    color: var(--color-button-text);
+    display: grid;
+    grid-template-columns: 100px 4fr;
+    gap: 20px;
+    align-items: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 8px;
+    margin-block: 8px;
+    text-align: left;
+}
+
+.image {
+    background-color: white;
+    max-height: 100px;
+    
+}

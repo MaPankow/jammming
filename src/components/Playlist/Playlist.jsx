@@ -1,4 +1,4 @@
-import './Playlist.css';
+import styles from './Playlist.module.css';
 import { useState } from 'react';
 import Tracklist from '../Tracklist/Tracklist';
 
@@ -13,7 +13,7 @@ function Playlist () {
 
     return (
         <div>
-            <h2>My Playlist</h2>
+            <h2 className={styles.redText}>My Playlist</h2>
             <Tracklist tracks={playlistTracks} />
         </div>
     )

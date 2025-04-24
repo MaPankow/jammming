@@ -13,8 +13,11 @@
 }
 
 .column {
-  background-color: darkslategray;
+  background-image: url(src/assets/pexels-alberlan-7311920.jpg);
   padding: 1rem;
   border-radius: 8px;
 }
 
+.redText {
+  color: var(--color-text-red);
+}

@@ -34,7 +34,7 @@ function App() {
       <div >
         {/* Logos, Hintergründe etc */}
       </div>
-      <h1>Jammming</h1>
+      <h1>Ja<span className={styles.redText}>mmm</span>ing</h1>
       <ThemeToggle />
       <div>
         <SearchBar searchSpotify={searchSpotify} />

@@ -2,6 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  /* font-size: 18px; */
 
   /* Farbvariablen Dark Mode (Default) */
 
@@ -10,6 +11,8 @@
   --color-link: #9497c2;
   --color-link-hover: #444792;
   --color-button-bg: #1a1a1a;
+  --color-tracktiles: #1a1a1a;
+  --color-text-red: #c50606;
 
   color-scheme: light dark;
   color: var(--color-text);
@@ -24,6 +27,7 @@
 html.light {
   --color-text: #213547;
   --color-bg: #ffffff;
+  --color-tracktiles: #ceb3b3;
   --color-link-hover: #5d63d3;
   --color-button-bg: #f9f9f9;
   --color-button-text: #1a1a1a;
@@ -69,6 +73,10 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 2em;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -80,6 +88,7 @@ button {
   color: var(--color-button-text);
   cursor: pointer;
   transition: border-color 0.25s;
+  margin: 8px;
 }
 button:hover {
   border-color: #646cff;
@@ -88,3 +97,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+p, li {
+  font-size: 18 px;
+}
+

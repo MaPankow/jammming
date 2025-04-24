@@ -1,17 +1,14 @@
 import Track from '../Track/Track';
-import './Tracklist.css';
+import styles from './Tracklist.module.css';
 
 function Tracklist ( {tracks}) {
 
 
     return (
-        <div>
-            <div>
-                {tracks.map((track) => (
-                    <Track track={track} key={track.id} />
-                    ))}
-                </div>
-
+        <div className={styles.tracklistContainer}>
+            {tracks.map((track) => (
+                <Track track={track} key={track.id} />
+            ))}
         </div>
     );
 }
