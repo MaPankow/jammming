@@ -1,6 +1,7 @@
 import styles from './Playlist.module.css';
 import { useState } from 'react';
 import Tracklist from '../Tracklist/Tracklist';
+import SaveToSpotify from '../SaveToSpotify/SaveToSpotify';
 
 
 function Playlist () {
@@ -15,26 +16,28 @@ function Playlist () {
         <div>
             <h2 className={styles.redText}>My Playlist</h2>
             <Tracklist tracks={playlistTracks} />
+            <SaveToSpotify playlistData={playlistTracks}/>
         </div>
     )
     
 };
 
-// in eine extra Komponente auslagern
-function SaveToSpotify ({saveToSpotify}) {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (saveToSpotify) saveToSpotify();
-    };
+// // in eine extra Komponente auslagern
+// function SaveToSpotify ({saveToSpotify}) {
+//     const handleSubmit = (e) => {
+//         e.preventDefault();
+//         if (saveToSpotify) saveToSpotify();
+//     };
 
     
-    return (
-        <form className="form" onSubmit={handleSubmit}>
-                    <div>
-                        <button type="submit">Save to Spotify</button>
-                    </div>
-                </form>
-    );
-}
+//     return (
+//         <form className="form" onSubmit={handleSubmit}>
 
-export { Playlist, SaveToSpotify };
+//                 <div>
+//                     <button type="submit">Save to Spotify</button>
+//                 </div>
+//         </form>
+//     );
+// }
+
+export default Playlist;

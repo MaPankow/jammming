@@ -2,8 +2,8 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './App.module.css';
 import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
-import { Playlist, SaveToSpotify } from './components/Playlist/Playlist';
-
+import Playlist from './components/Playlist/Playlist';
+import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
 
 const tracks = [
   { id: 1, title: "Uprising", artist: "Muse", album: "The Resistance" },
@@ -44,7 +44,7 @@ function App() {
           </div>
           <div className={styles.column}>
             <Playlist />
-            <SaveToSpotify saveToSpotify={saveToSpotify}/>
+           
           </div>
         </div>
       </div>
