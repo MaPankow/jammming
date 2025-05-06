@@ -2,7 +2,7 @@
     background-color: var(--color-tracktiles);
     color: var(--color-button-text);
     display: grid;
-    grid-template-columns: 100px 4fr;
+    grid-template-columns: 100px 3fr 1fr;
     gap: 20px;
     align-items: center;
     padding-top: 0.5rem;
@@ -19,3 +19,12 @@
     max-height: 100px;
     
 }
+
+
+actionButton {
+    color: var(--color-button-text);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 900;
+  }
+  

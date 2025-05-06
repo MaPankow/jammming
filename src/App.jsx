@@ -5,6 +5,8 @@ import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
 import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
 
+import { useState } from 'react';
+
 const tracks = [
   { id: 1, title: "Uprising", artist: "Muse", album: "The Resistance" },
   { id: 2, title: "Hysteria", artist: "Muse", album: "Absolution" },
@@ -20,6 +22,9 @@ const tracks = [
 
 
 function App() {
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+
+
   const searchSpotify = (title) => {
     console.log(`Searching Spotify with ${title}`);
   }
@@ -27,6 +32,10 @@ function App() {
   const saveToSpotify = (playlist) => {
     playlist = "My Playlist";
     console.log(`Saved ${playlist} to Spotify`);
+  }
+
+  const handleAddToPlaylist = (track) => {
+    console.log("Track hinzugefügt:", track);
   }
 
   return (
@@ -40,10 +49,15 @@ function App() {
         <SearchBar searchSpotify={searchSpotify} />
         <div className={styles.container}>
           <div className={styles.column}>
-          <SearchResults tracks={tracks} />
+          <SearchResults 
+            tracks={tracks} 
+            onAdd={handleAddToPlaylist}
+          />
           </div>
           <div className={styles.column}>
-            <Playlist />
+            <Playlist 
+              tracks={playlistTracks}
+            />
            
           </div>
         </div>

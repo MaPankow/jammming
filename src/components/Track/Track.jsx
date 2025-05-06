@@ -2,7 +2,12 @@ import styles from './Track.module.css';
 
 
 
-function Track ({ track }) {
+function Track ({ track, onAction, actionLabel }) {
+
+    const handleClick = () => {
+        onAction(track);
+    };
+
     return (
         <div className={styles.songContainer}>
             <div className={styles.column}>
@@ -23,6 +28,13 @@ function Track ({ track }) {
                 <div className="album">
                     <p>Album: {track.album}</p>
                 </div>
+            </div>
+            <div className={styles.column}>
+ 
+                    <button onClick={handleClick} className={styles.actionButton} >
+                        {actionLabel}
+                    </button>
+
             </div>
         </div>
     );

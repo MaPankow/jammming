@@ -11,10 +11,14 @@ function Playlist () {
         { id: 10, title: "The Handler", artist: "Muse", album: "Drones" },
     ]);
 
+    const [playlistName, setPlaylistName] = useState(['My Muse Favourites'])
+
 
     return (
         <div>
-            <h2 className={styles.redText}>My Playlist</h2>
+            <h2 className={styles.redText}>
+                {playlistName}
+            </h2>
             <Tracklist tracks={playlistTracks} />
             <SaveToSpotify playlistData={playlistTracks}/>
         </div>
@@ -22,22 +26,5 @@ function Playlist () {
     
 };
 
-// // in eine extra Komponente auslagern
-// function SaveToSpotify ({saveToSpotify}) {
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         if (saveToSpotify) saveToSpotify();
-//     };
-
-    
-//     return (
-//         <form className="form" onSubmit={handleSubmit}>
-
-//                 <div>
-//                     <button type="submit">Save to Spotify</button>
-//                 </div>
-//         </form>
-//     );
-// }
 
 export default Playlist;
