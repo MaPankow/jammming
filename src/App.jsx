@@ -35,7 +35,17 @@ function App() {
   }
 
   const handleAddToPlaylist = (track) => {
+    const alreadyInPlaylist = playlistTracks.some(t => t.id === track.id);
+    
+    if (alreadyInPlaylist) return;
+      
+    setPlaylistTracks(prev => [...prev, track ]);
     console.log("Track hinzugefügt:", track);
+  }
+
+  const handleRemoveTrack = (track) => {
+    setPlaylistTracks(prev => prev.filter(t => t.id !== track.id));
+    console.log("Track removed", track);
   }
 
   return (
@@ -57,6 +67,8 @@ function App() {
           <div className={styles.column}>
             <Playlist 
               tracks={playlistTracks}
+              onRemove={handleRemoveTrack}
+
             />
            
           </div>

@@ -10,7 +10,11 @@ function SearchResults ({ tracks, onAdd }) {
     return (
         <div className="searchResults">
             <h2 className={styles.redText}>Search Results</h2>            
-            <Tracklist tracks={tracks} onAction={onAdd} actionLabel="+" />                       
+            <Tracklist 
+                tracks={tracks} 
+                onAction={onAdd} 
+                actionLabel="+" 
+            />                       
         </div>
     );
 }
