@@ -2,20 +2,21 @@ import styles from './Playlist.module.css';
 import { useState } from 'react';
 import Tracklist from '../Tracklist/Tracklist';
 import SaveToSpotify from '../SaveToSpotify/SaveToSpotify';
+import PlaylistNameInput from '../PlaylistNameInput/PlaylistNameInput';
 
 
 function Playlist ({ tracks, onRemove }) {   
-   console.log(tracks);
+    console.log(tracks);
 
 
-    const [playlistName, setPlaylistName] = useState('My Muse Favourites');
-
+    const [playlistName, setPlaylistName] = useState();
 
     return (
         <div>
-            <h2 className={styles.redText}>
-                {playlistName}
-            </h2>
+            <PlaylistNameInput 
+                initialPlaylistName={playlistName}
+                onChange={setPlaylistName}
+            />
             <Tracklist 
                 tracks={tracks}
                 onAction={onRemove} 

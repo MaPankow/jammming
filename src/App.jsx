@@ -44,8 +44,13 @@ function App() {
   }
 
   const handleRemoveTrack = (track) => {
-    setPlaylistTracks(prev => prev.filter(t => t.id !== track.id));
-    console.log("Track removed", track);
+    const isInPlaylist = playlistTracks.some(t => t.id === track.id);
+
+    if(isInPlaylist) {
+      setPlaylistTracks(prev => prev.filter(t => t.id !== track.id));
+      console.log("Track removed", track);
+    }
+
   }
 
   return (
