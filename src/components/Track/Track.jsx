@@ -20,13 +20,13 @@ function Track ({ track, onAction, actionLabel }) {
             </div>
             <div className={styles.column}>
                 <div className="songTitle">
-                    <p>Title: {track.title}</p>
+                    <p>Title: {track.name}</p>
                 </div>
                 <div className="artist">
-                    <p>Artist: {track.artist}</p>
+                    <p>Artist: {track.artists[0].name}</p>
                 </div>
                 <div className="album">
-                    <p>Album: {track.album}</p>
+                    <p>Album: {track.album.name}</p>
                 </div>
             </div>
             <div className={styles.column}>
@@ -41,3 +41,6 @@ function Track ({ track, onAction, actionLabel }) {
 }
 
 export default Track;
+
+// jsx:
+// <p>{track.name} – {track.artists[0].name} ({track.album.name})</p>

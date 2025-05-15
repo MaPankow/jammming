@@ -8,16 +8,36 @@ import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
 import { useState } from 'react';
 
 const tracks = [
-  { id: 1, title: "Uprising", artist: "Muse", album: "The Resistance" },
-  { id: 2, title: "Hysteria", artist: "Muse", album: "Absolution" },
-  { id: 3, title: "Starlight", artist: "Muse", album: "Black Holes & Revelations" },
-  { id: 4, title: "Time Is Running Out", artist: "Muse", album: "Absolution" },
-  { id: 5, title: "Supermassive Black Hole", artist: "Muse", album: "Black Holes & Revelations" },
-  { id: 6, title: "Knights of Cydonia", artist: "Muse", album: "Black Holes & Revelations" },
-  { id: 7, title: "Madness", artist: "Muse", album: "The 2nd Law" },
-  { id: 8, title: "Plug In Baby", artist: "Muse", album: "Origin of Symmetry" },
-  { id: 9, title: "New Born", artist: "Muse", album: "Origin of Symmetry" },
-  { id: 10, title: "The Handler", artist: "Muse", album: "Drones" },
+  { id: "4VqPOruhp5EdPBeR92t6lQ", 
+    name: "Uprising", 
+    artists: [{name: "Muse"}], //artists ist ein Objektarray, jeder aufgeführte Artist ist ein eigenes Objekt mit name etc.
+    album: {name: "The Resistance"}, // album ist nochmal als Objekt verschachtelt, es hat eigene Informationen
+    uri: "spotify:track:4VqPOruhp5EdPBeR92t6lQ"
+  },
+  { id: "7xyYsOvq5Ec3P4fr6mM9fD", 
+    name: "Hysteria", 
+    artists: [{name: "Muse"}], 
+    album: {name: "Absolution"},
+    uri: "spotify:track:7xyYsOvq5Ec3P4fr6mM9fD"
+  },
+  { id: "3skn2lauGk7Dx6bVIt5DVj", 
+    name: "Starlight", 
+    artists: [{name: "Muse"}], 
+    album: {name: "Balck Holes & Revelatuons"},
+    uri: "spotify:track:3skn2lauGk7Dx6bVIt5DVj" 
+  },
+  { id: "5tG5a0s0gBz7eFZ0u0V1hD", 
+    name: "New Born", 
+    artists: [{name: "Muse"}], 
+    album: {name: "Origin Of Symmetry"},
+    uri: "spotify:track:5tG5a0s0gBz7eFZ0u0V1hD" 
+  },
+  { id: "2cQTVGXSf6JelS23kwuuFV", 
+    name: "The Handler", 
+    artists: [{name: "Muse"}], 
+    album: {name: "Drones"},
+    uri: "spotify:track:2cQTVGXSf6JelS23kwuuFV"
+  },
 ];
 
 
