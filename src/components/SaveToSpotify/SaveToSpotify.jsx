@@ -1,10 +1,11 @@
-import Playlist from "../Playlist/Playlist";
 
-function SaveToSpotify ({ playlistData }) {
+
+function SaveToSpotify ({ playlistData, playlistName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (playlistData && playlistData.length > 0) {
-            console.log("saved to Spotify");
+        const trackUris = playlistData.map(track => track.uri);
+        if (trackUris && trackUris.length > 0) {
+            console.log("saved to Spotify: ", playlistName, playlistData);
         } else {
             console.log("No data received");
         }

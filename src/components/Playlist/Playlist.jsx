@@ -1,4 +1,4 @@
-import styles from './Playlist.module.css';
+
 import { useState } from 'react';
 import Tracklist from '../Tracklist/Tracklist';
 import SaveToSpotify from '../SaveToSpotify/SaveToSpotify';
@@ -13,6 +13,7 @@ function Playlist ({ tracks, onRemove }) {
 
     return (
         <div>
+
             <PlaylistNameInput 
                 initialPlaylistName={playlistName}
                 onChange={setPlaylistName}
@@ -22,7 +23,7 @@ function Playlist ({ tracks, onRemove }) {
                 onAction={onRemove} 
                 actionLabel="-"
             />
-            <SaveToSpotify playlistData={tracks}/>
+            <SaveToSpotify playlistData={tracks} playlistName={playlistName} />
         </div>
     )
     

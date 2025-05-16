@@ -45,6 +45,7 @@ function App() {
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
 
+
   const searchSpotify = (title) => {
     console.log(`Searching Spotify with ${title}`);
   }
