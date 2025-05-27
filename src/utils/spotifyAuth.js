@@ -6,7 +6,7 @@ const generateRandomString = (length) => {
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
 
-const codeVerifier  = generateRandomString(64);
+
 
 // Code Challenge
 
@@ -24,70 +24,64 @@ const base64encode = (input) => {
     .replace(/\//g, '_');
 }
 
-const hashed = await sha256(codeVerifier);
-const codeChallenge = base64encode(hashed);
 
 // Anfrage Nutzer-Authetifizierung
 
-const clientId = 'YOUR_CLIENT_ID';  //TODO: from .env
-const redirectUri = 'http://127.0.0.1:8080';
+export const redirectToSpotifyLogin = async () => {
+    const codeVerifier  = generateRandomString(64);
+    const hashed = await sha256(codeVerifier);
+    const codeChallenge = base64encode(hashed);
 
-const scope = 'user-read-private user-read-email';
-const authUrl = new URL("https://accounts.spotify.com/authorize")
+    localStorage.setItem('code_verifier', codeVerifier);
 
+// Anfrage Nutzer-Authetifizierung
 
-window.localStorage.setItem('code_verifier', codeVerifier);
+    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+    const scope = 'playlist-modify-private playlist-modify-public';
 
-const params =  {
-  response_type: 'code',
-  client_id: clientId,
-  scope,
-  code_challenge_method: 'S256',
-  code_challenge: codeChallenge,
-  redirect_uri: redirectUri,
-}
+    const params = new URLSearchParams({
+        response_type: 'code',
+        client_id: clientId,
+        scope,
+        code_challenge_method: 'S256',
+        code_challenge: codeChallenge,
+        redirect_uri: redirectUri,
+    });
 
-authUrl.search = new URLSearchParams(params).toString();
-window.location.href = authUrl.toString();
+    const authUrl = "https://accounts.spotify.com/authorize?" + params.toString();
+    window.location.href = authUrl;
+};
 
-// Code-Parameter aus der URL lösen
-const urlParams = new URLSearchParams(window.location.search);
-let code = urlParams.get('code');
+export const getToken = async (code) => {
+    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+    const codeVerifier = localStorage.getItem('code_verifier');
 
-if (code) {
-  getToken(code);
-  // Code aus der URL entfernen
-  window.history.replaceState({}, document.title, "/");
-}
+    const payload = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: redirectUri,
+            code_verifier: codeVerifier,
+            }),
+        };
+     
+    const response = await fetch("https://accounts.spotify.com/api/token", payload);
+    const data = await response.json();
 
-// Anfrage Access Token
-
-const getToken = async code => {
-
-  // stored in the previous step
-  const codeVerifier = localStorage.getItem('code_verifier');
-
-  const url = "https://accounts.spotify.com/api/token";
-  const payload = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      client_id: clientId,
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: redirectUri,
-      code_verifier: codeVerifier,
-    }),
-  }
-
-  const body = await fetch(url, payload);
-  const response = await body.json();
-
-  localStorage.setItem('access_token', response.access_token);
-}
-
+    if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        console.log("Access token saved!");
+    } else {
+        console.error("Token error:", data);
+    }   
+};
 
 
 

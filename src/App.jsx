@@ -4,8 +4,10 @@ import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
 import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
+import { getToken, redirectToSpotifyLogin } from './utils/spotifyAuth';
+import { useState, useEffect } from 'react';
 
-import { useState } from 'react';
+
 
 const tracks = [
   { id: "4VqPOruhp5EdPBeR92t6lQ", 
@@ -42,6 +44,9 @@ const tracks = [
 
 
 function App() {
+
+
+
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
 

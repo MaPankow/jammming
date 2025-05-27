@@ -104,8 +104,9 @@ Nutzer akzeptiert die Berechtigungen und wird an die redirect_uri der App zurüc
 HTTP-POST-Anfrage wird an Spotify (Endpoint /token) gesendet, mit Parametern wie dem grant_type (in dem Fall "authorization_code"), dem erstellten code, noch einmal redirect URI, Client ID und Code Verifier.
 **Ja, richtig, diesmal den originalen Verifier!** Spotfy wird ihn selbst hashen und mit der Challenge aus dem vorherigen Schritt vergleichen. Nur wenn beides übereinstimmt, wird das Token übermittelt.
 
-
-
+#### Client-ID und Redirect-URI nicht öffentlich machen
+Auf Spotify habe ich meine App angemeldet und eine Client-ID erhalten. Die darf nicht öffentlich preisgegeben werden. Besser ist es auch, die Redirect-URI nicht öffentlich zu zeigen.
+Im Root-Verzeichnis erstelle ich eine .env-Datei und speichere dort beides unter VITE_SPOTIFY_CLIENT_ID und VITE_SPOTIFY_REDIRECT_URI ab. Die .env-Datei trage ich in der Datei .gitignore ein.
 
 ## Datenschutzerklärung
 
