@@ -12,11 +12,10 @@ function Track ({ track, onAction, actionLabel }) {
         <div className={styles.songContainer}>
             <div className={styles.column}>
                 <img 
-                    src='src/assets/muse-logo-png_seeklogo-96193.png' 
-                    alt='band logo'
                     className={styles.image}
-                    >
-                </img>
+                    src={track.album.images[0]?.url}
+                    alt={`Cover of ${track.album.name}`}
+                />
             </div>
             <div className={styles.column}>
                 <div className="songTitle">
