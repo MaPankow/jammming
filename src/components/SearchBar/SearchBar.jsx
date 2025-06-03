@@ -13,6 +13,10 @@ function SearchBar ({ searchSpotify }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
+        if (!title.trim()) {
+            alert("Bitte gib einen Suchbegriff ein.");
+            return;
+        }
         searchSpotify(title);
     }
 
