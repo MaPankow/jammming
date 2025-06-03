@@ -9,56 +9,52 @@ import { useState, useEffect } from 'react';
 
 
 
-const tracks = [
-  { id: "4VqPOruhp5EdPBeR92t6lQ", 
-    name: "Uprising", 
-    artists: [{name: "Muse"}], //artists ist ein Objektarray, jeder aufgeführte Artist ist ein eigenes Objekt mit name etc.
-    album: {name: "The Resistance"}, // album ist nochmal als Objekt verschachtelt, es hat eigene Informationen
-    uri: "spotify:track:4VqPOruhp5EdPBeR92t6lQ"
-  },
-  { id: "7xyYsOvq5Ec3P4fr6mM9fD", 
-    name: "Hysteria", 
-    artists: [{name: "Muse"}], 
-    album: {name: "Absolution"},
-    uri: "spotify:track:7xyYsOvq5Ec3P4fr6mM9fD"
-  },
-  { id: "3skn2lauGk7Dx6bVIt5DVj", 
-    name: "Starlight", 
-    artists: [{name: "Muse"}], 
-    album: {name: "Balck Holes & Revelatuons"},
-    uri: "spotify:track:3skn2lauGk7Dx6bVIt5DVj" 
-  },
-  { id: "5tG5a0s0gBz7eFZ0u0V1hD", 
-    name: "New Born", 
-    artists: [{name: "Muse"}], 
-    album: {name: "Origin Of Symmetry"},
-    uri: "spotify:track:5tG5a0s0gBz7eFZ0u0V1hD" 
-  },
-  { id: "2cQTVGXSf6JelS23kwuuFV", 
-    name: "The Handler", 
-    artists: [{name: "Muse"}], 
-    album: {name: "Drones"},
-    uri: "spotify:track:2cQTVGXSf6JelS23kwuuFV"
-  },
-];
-
-
 function App() {
 
-
-
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [token, setToken] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('code');
+
+    if (code) {
+      getToken(code).then(() => {
+        setToken(localStorage.getItem('access_token'));
+        window.history.replaceState({}, document.title, '/');
+      });
+    } else {
+      const accessToken = localStorage.getItem('access_token');
+      if (accessToken) setToken(accessToken)
+    }
+  }, []);
 
 
+  const searchSpotify = async (term) => {
+    if (!token) {
+      redirectToSpotifyLogin();
+      return;
+    }
+    // console.log(`Searching Spotify with ${term}`);
 
-  const searchSpotify = (title) => {
-    console.log(`Searching Spotify with ${title}`);
-  }
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(term)}&type=track`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    console.log("Spotify-Ergebnisse:", data);
+
+    if (data.tracks && data.tracks.items) {
+      setSearchResults(data.tracks.items);
+    }
+  };
 
   const saveToSpotify = (playlist) => {
     playlist = "My Playlist";
     console.log(`Saved ${playlist} to Spotify`);
-  }
+  };
 
   const handleAddToPlaylist = (track) => {
     const alreadyInPlaylist = playlistTracks.some(t => t.id === track.id);
@@ -67,7 +63,7 @@ function App() {
       
     setPlaylistTracks(prev => [...prev, track ]);
     console.log("Track hinzugefügt:", track);
-  }
+  };
 
   const handleRemoveTrack = (track) => {
     const isInPlaylist = playlistTracks.some(t => t.id === track.id);
@@ -91,7 +87,7 @@ function App() {
         <div className={styles.container}>
           <div className={styles.column}>
           <SearchResults 
-            tracks={tracks} 
+            tracks={searchResults} 
             onAdd={handleAddToPlaylist}
           />
           </div>
