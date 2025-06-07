@@ -13,6 +13,7 @@ function App() {
 
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [token, setToken] = useState(null);
+  const [searchTermBeforeLogin, setSearchTermBeforeLogin] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
    const searchSpotify = useCallback (async (term, explicitToken) => {
@@ -24,15 +25,15 @@ function App() {
 
     if (!accessToken) {
       localStorage.setItem("last_search_term", term);
-      redirectToSpotifyLogin();
+      redirectToSpotifyLogin()
       return;
     }
 
-    const refreshedToken = await refreshAccessToken();
-    if (refreshedToken) {
-      accessToken = refreshedToken;
-      setToken(refreshedToken);
-    }
+    // const refreshedToken = await refreshAccessToken();
+    // if (refreshedToken) {
+    //   accessToken = refreshedToken;
+    //   setToken(refreshedToken);
+    // }
     
     const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(term)}&type=track`, {
       headers: {
@@ -61,6 +62,14 @@ function App() {
   }, [token]);
 
   useEffect(() => {
+    if (searchTermBeforeLogin && !token) {
+      localStorage.setItem("last_search_term", searchTermBeforeLogin);
+      redirectToSpotifyLogin();
+      setSearchTermBeforeLogin(null);
+    }
+  }, [searchTermBeforeLogin, token]);
+
+  useEffect(() => {
     const code = new URLSearchParams(window.location.search).get('code');
     const tokenAlreadySet = localStorage.getItem('access_token');
     
@@ -68,28 +77,27 @@ function App() {
       getToken(code).then(() => {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-          console.log("Access-Token aus getToken:", accessToken);
-          setToken(accessToken);        
+          setToken(accessToken);  
+          
+          const lastSearchTerm = localStorage.getItem("last_search_term");
+          if (lastSearchTerm) {
+            searchSpotify(lastSearchTerm, accessToken);
+          
+          }
         }      
         window.history.replaceState({}, document.title, window.location.pathname);
       });
     } else if (tokenAlreadySet) {
       console.log("Token bereits vorhanden:", tokenAlreadySet);
-      setToken(tokenAlreadySet)
-    }
-  }, []);
+      setToken(tokenAlreadySet);
 
-  useEffect(() => {
-    if (token) {
-      console.log("Token wurde gesetzt:", token);
-      const savedTerm = localStorage.getItem("last_search_term");
-      if (savedTerm) {
-        console.log("Gefundener Suchbegriff:", savedTerm);
-        searchSpotify(savedTerm, token);
-        localStorage.removeItem("last_search_term");
-      }
+      const lastSearchTerm = localStorage.getItem("last_search_term");
+        if (lastSearchTerm) {
+          searchSpotify(lastSearchTerm, tokenAlreadySet);
+        }
     }
-  }, [token, searchSpotify]);
+  }, [searchSpotify]);
+
 
 
   const saveToSpotify = (playlist) => {

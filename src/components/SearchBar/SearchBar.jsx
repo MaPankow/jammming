@@ -29,7 +29,7 @@ function SearchBar ({ searchSpotify }) {
             <form className="form" onSubmit={handleSearch}>
                 <div className="inputField">
                     <label htmlFor="tracksearch">Browse tracks: </label>
-                    <input type="text" id="tracksearch" onChange={handleTitle} />
+                    <input type="text" id="tracksearch" value={title} onChange={handleTitle} />
                 </div>
                 <div>
                     <button type="submit">Search</button>

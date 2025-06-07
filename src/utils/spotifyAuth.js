@@ -29,7 +29,6 @@ const base64encode = (input) => {
 
 export const redirectToSpotifyLogin = async () => {
     localStorage.removeItem('code_verifier');
-    
     const codeVerifier  = generateRandomString(64);
     alert("Generated code_verifier:" + codeVerifier); 
     const hashed = await sha256(codeVerifier);
@@ -50,6 +49,8 @@ export const redirectToSpotifyLogin = async () => {
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
         redirect_uri: redirectUri,
+        show_dialog: 'true',
+        state: codeVerifier
     });
 
     const authUrl = "https://accounts.spotify.com/authorize?" + params.toString();
