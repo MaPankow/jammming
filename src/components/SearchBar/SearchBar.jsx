@@ -17,6 +17,7 @@ function SearchBar ({ searchSpotify }) {
             alert("Bitte gib einen Suchbegriff ein.");
             return;
         }
+        localStorage.setItem("last_search_term", title);
         searchSpotify(title);
     }
 

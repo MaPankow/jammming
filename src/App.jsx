@@ -4,8 +4,8 @@ import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
 import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
-import { getToken, redirectToSpotifyLogin } from './utils/spotifyAuth';
-import { useState, useEffect } from 'react';
+import { getToken, redirectToSpotifyLogin, refreshAccessToken } from './utils/spotifyAuth';
+import { useState, useEffect, useCallback } from 'react';
 
 
 
@@ -15,41 +15,82 @@ function App() {
   const [token, setToken] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
-  useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get('code');
-
-    if (code) {
-      getToken(code).then(() => {
-        setToken(localStorage.getItem('access_token'));
-        window.history.replaceState({}, document.title, '/');
-      });
-    } else {
-      const accessToken = localStorage.getItem('access_token');
-      if (accessToken) setToken(accessToken)
-    }
-  }, []);
+   const searchSpotify = useCallback (async (term, explicitToken) => {
+    let accessToken = explicitToken || token;
 
 
-  const searchSpotify = async (term) => {
-    if (!token) {
+    console.log("➡️ searchSpotify aufgerufen mit:", term);
+    console.log("🔑 Token verwendet:", accessToken);
+
+    if (!accessToken) {
+      localStorage.setItem("last_search_term", term);
       redirectToSpotifyLogin();
       return;
     }
-    // console.log(`Searching Spotify with ${term}`);
 
+    const refreshedToken = await refreshAccessToken();
+    if (refreshedToken) {
+      accessToken = refreshedToken;
+      setToken(refreshedToken);
+    }
+    
     const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(term)}&type=track`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
     const data = await response.json();
+
+    if (data.error && data.error.status === 401) {
+      const newToken = await refreshAccessToken();
+      if (newToken) {
+        setToken(newToken);
+        return searchSpotify(term);
+      } else {
+        redirectToSpotifyLogin();
+        return;
+      }
+    }
+
     console.log("Spotify-Ergebnisse:", data);
 
     if (data.tracks && data.tracks.items) {
       setSearchResults(data.tracks.items);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    const tokenAlreadySet = localStorage.getItem('access_token');
+    
+    if (code && !tokenAlreadySet) {
+      getToken(code).then(() => {
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+          console.log("Access-Token aus getToken:", accessToken);
+          setToken(accessToken);        
+        }      
+        window.history.replaceState({}, document.title, window.location.pathname);
+      });
+    } else if (tokenAlreadySet) {
+      console.log("Token bereits vorhanden:", tokenAlreadySet);
+      setToken(tokenAlreadySet)
+    }
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      console.log("Token wurde gesetzt:", token);
+      const savedTerm = localStorage.getItem("last_search_term");
+      if (savedTerm) {
+        console.log("Gefundener Suchbegriff:", savedTerm);
+        searchSpotify(savedTerm, token);
+        localStorage.removeItem("last_search_term");
+      }
+    }
+  }, [token, searchSpotify]);
+
 
   const saveToSpotify = (playlist) => {
     playlist = "My Playlist";
