@@ -5,10 +5,10 @@ const generateRandomString = (length) => {
   const values = crypto.getRandomValues(new Uint8Array(length));
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
+const codeVerifier  = generateRandomString(64);
 
 
-
-// Code Challenge
+// Code Challenge (hash den Code Verifier mit dem SHA256-Algorithmus)
 
 const sha256 = async (plain) => {
   const encoder = new TextEncoder()
@@ -25,18 +25,13 @@ const base64encode = (input) => {
 }
 
 
+const hashed = await sha256(codeVerifier);
+const codeChallenge = base64encode(hashed);
+
 // Anfrage Nutzer-Authetifizierung
 
 export const redirectToSpotifyLogin = async () => {
-    localStorage.removeItem('code_verifier');
-    const codeVerifier  = generateRandomString(64);
-    alert("Generated code_verifier:" + codeVerifier); 
-    const hashed = await sha256(codeVerifier);
-    const codeChallenge = base64encode(hashed);
-
     localStorage.setItem('code_verifier', codeVerifier);
-
-// Anfrage Nutzer-Authetifizierung
 
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
@@ -61,7 +56,7 @@ export const getToken = async (code) => {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
     const codeVerifier = localStorage.getItem('code_verifier');
-    console.log("Retrieved code_verifier:", codeVerifier);
+
 
     if (!codeVerifier) {
     console.error("Kein Code Verifier gefunden! Token kann nicht geholt werden.");

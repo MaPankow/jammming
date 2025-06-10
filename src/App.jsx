@@ -84,7 +84,9 @@ function App() {
             searchSpotify(lastSearchTerm, accessToken);
           
           }
-        }      
+        } else if (!tokenAlreadySet) {
+          redirectToSpotifyLogin();
+        }    
         window.history.replaceState({}, document.title, window.location.pathname);
       });
     } else if (tokenAlreadySet) {
