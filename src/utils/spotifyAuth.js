@@ -5,7 +5,7 @@ const generateRandomString = (length) => {
   const values = crypto.getRandomValues(new Uint8Array(length));
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
-const codeVerifier  = generateRandomString(64);
+
 
 
 // Code Challenge (hash den Code Verifier mit dem SHA256-Algorithmus)
@@ -25,13 +25,18 @@ const base64encode = (input) => {
 }
 
 
-const hashed = await sha256(codeVerifier);
-const codeChallenge = base64encode(hashed);
+
 
 // Anfrage Nutzer-Authetifizierung
 
 export const redirectToSpotifyLogin = async () => {
-    localStorage.setItem('code_verifier', codeVerifier);
+    const codeVerifier  = generateRandomString(64);
+    const hashed = await sha256(codeVerifier);
+    const codeChallenge = base64encode(hashed);
+    
+
+    sessionStorage.setItem('code_verifier', codeVerifier);
+    alert('Code Verifier: '+ codeVerifier);
 
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
@@ -45,7 +50,6 @@ export const redirectToSpotifyLogin = async () => {
         code_challenge: codeChallenge,
         redirect_uri: redirectUri,
         show_dialog: 'true',
-        state: codeVerifier
     });
 
     const authUrl = "https://accounts.spotify.com/authorize?" + params.toString();
@@ -55,7 +59,7 @@ export const redirectToSpotifyLogin = async () => {
 export const getToken = async (code) => {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
-    const codeVerifier = localStorage.getItem('code_verifier');
+    const codeVerifier = sessionStorage.getItem('code_verifier');
 
 
     if (!codeVerifier) {
@@ -87,7 +91,6 @@ export const getToken = async (code) => {
             console.log("Refresh Token gespeichert!");
         }
         console.log("Access Token gespeichert!");
-        localStorage.removeItem('code_verifier');
         window.history.replaceState({}, document.title, window.location.pathname);
     } else {
         console.error("Token error:", data);
@@ -130,8 +133,8 @@ export const refreshAccessToken = async () => {
 
     return data.access_token;
   } else {
-    console.error("Fehler beim Token-Refresh:", data);
-    return null;
+    throw new Error("Fehler beim Token-Refresh:", data);    
   }
 };
+
 

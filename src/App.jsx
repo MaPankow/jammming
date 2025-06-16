@@ -8,8 +8,9 @@ import { getToken, redirectToSpotifyLogin, refreshAccessToken } from './utils/sp
 import { useState, useEffect, useCallback } from 'react';
 
 
-
 function App() {
+
+  
 
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [token, setToken] = useState(null);
@@ -77,17 +78,16 @@ function App() {
       getToken(code).then(() => {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-          setToken(accessToken);  
-          
+          setToken(accessToken);            
           const lastSearchTerm = localStorage.getItem("last_search_term");
           if (lastSearchTerm) {
-            searchSpotify(lastSearchTerm, accessToken);
-          
+            searchSpotify(lastSearchTerm, accessToken);          
           }
-        } else if (!tokenAlreadySet) {
-          redirectToSpotifyLogin();
-        }    
+        } 
         window.history.replaceState({}, document.title, window.location.pathname);
+      }).catch((error) => {
+        console.error("Fehler beim Tokenholen: ", error);
+        // redirectToSpotifyLogin();
       });
     } else if (tokenAlreadySet) {
       console.log("Token bereits vorhanden:", tokenAlreadySet);
@@ -132,7 +132,8 @@ function App() {
         {/* Logos, Hintergründe etc */}
       </div>
       <h1>Ja<span className={styles.redText}>mmm</span>ing</h1>
-      <ThemeToggle />
+      <ThemeToggle /> 
+
       <div>
         <SearchBar searchSpotify={searchSpotify} />
         <div className={styles.container}>
