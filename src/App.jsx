@@ -21,9 +21,6 @@ function App() {
     let accessToken = explicitToken || token;
 
 
-    console.log("➡️ searchSpotify aufgerufen mit:", term);
-    console.log("🔑 Token verwendet:", accessToken);
-
     if (!accessToken) {
       localStorage.setItem("last_search_term", term);
       redirectToSpotifyLogin()
@@ -59,6 +56,7 @@ function App() {
 
     if (data.tracks && data.tracks.items) {
       setSearchResults(data.tracks.items);
+
     }
   }, [token]);
 
@@ -78,7 +76,8 @@ function App() {
       getToken(code).then(() => {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-          setToken(accessToken);            
+          setToken(accessToken);   
+            
           const lastSearchTerm = localStorage.getItem("last_search_term");
           if (lastSearchTerm) {
             searchSpotify(lastSearchTerm, accessToken);          
@@ -96,6 +95,8 @@ function App() {
       const lastSearchTerm = localStorage.getItem("last_search_term");
         if (lastSearchTerm) {
           searchSpotify(lastSearchTerm, tokenAlreadySet);
+          localStorage.removeItem("last_search_term"); 
+
         }
     }
   }, [searchSpotify]);

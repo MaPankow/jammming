@@ -35,8 +35,9 @@ export const redirectToSpotifyLogin = async () => {
     const codeChallenge = base64encode(hashed);
     
 
-    sessionStorage.setItem('code_verifier', codeVerifier);
-    alert('Code Verifier: '+ codeVerifier);
+    localStorage.setItem('code_verifier', codeVerifier);
+
+    
 
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
@@ -59,7 +60,7 @@ export const redirectToSpotifyLogin = async () => {
 export const getToken = async (code) => {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
-    const codeVerifier = sessionStorage.getItem('code_verifier');
+    const codeVerifier = localStorage.getItem('code_verifier');
 
 
     if (!codeVerifier) {
@@ -91,7 +92,10 @@ export const getToken = async (code) => {
             console.log("Refresh Token gespeichert!");
         }
         console.log("Access Token gespeichert!");
+
+        localStorage.removeItem('code_verifier');
         window.history.replaceState({}, document.title, window.location.pathname);
+        return data.access_token;
     } else {
         console.error("Token error:", data);
     }   
