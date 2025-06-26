@@ -32,3 +32,38 @@ const base64encode = (input) => {
 // hier wird nun die Code Challenge erstellt:
 const hashed = await sha256(codeVerifier)
 const codeChallenge = base64encode(hashed);
+
+// User Authorizationm wird mit einer GET REquest an https://accounts.spotify.com/authorize angefragt.
+
+// Die clientId darf nicht öffentlich gemacht werden. Deswegen liegt sie in einer .env-Datei und wird von dort aufgerufen.
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+
+const scope = 'playlist-modify-private playlist-modify-public';
+const authUrl = new URL("https://accounts.spotify.com/authorize");
+
+// codeVerifier wird gesetzt und im localStorage gespeichert
+// hier soll er bleiben, denn der Browser wird beim Redirect nach dem Login neu geladen
+window.localStorage.setItem('code_verifier', codeVerifier);
+
+const params =  {
+  response_type: 'code',
+  client_id: clientId,
+  scope,
+  code_challenge_method: 'S256',
+  code_challenge: codeChallenge,
+  redirect_uri: redirectUri,
+}
+
+authUrl.search = new URLSearchParams(params).toString(); //Objekt params wird in URL-String umgewandelt und an authSearch angehängt
+window.location.href = authUrl.toString(); // Weiterleitung an die Spotify-Login/Consent-Seite
+
+// User wird zu Spotify-Login weitergeleitet, (wenn kein "eingeloggt bleiben" existiert), nach erfolgreichem
+// Login zu einer Seite, auf der User Jammming den Zugriff auf deren Spotify-Konto erlaubt
+
+// die Redirect-Uri wird dafür genutzt
+// außerdem wird in der URL ein Code mitgeschickt, der geparst wird:
+
+const urlParams = new URLSearchParams(window.location.search);
+let code = urlParams.get('code');
+
