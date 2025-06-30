@@ -27,11 +27,6 @@ function App() {
       return;
     }
 
-    // const refreshedToken = await refreshAccessToken();
-    // if (refreshedToken) {
-    //   accessToken = refreshedToken;
-    //   setToken(refreshedToken);
-    // }
     
     const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(term)}&type=track`, {
       headers: {

@@ -67,3 +67,64 @@ window.location.href = authUrl.toString(); // Weiterleitung an die Spotify-Login
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
 
+// Access Token anfragen
+
+const getToken = async code => {
+
+  // der gespeicherte Code Verifier wird mitgeschickt und von Spotify
+  // gehasht und mit der Code Challenge verglichen. 
+  // Um ein Access Token zu erhalten, muss das Ergebnis mit der Code Challenge übereinstimmen.
+  const codeVerifier = localStorage.getItem('code_verifier');
+
+  const url = "https://accounts.spotify.com/api/token";
+  const payload = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      client_id: clientId,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+      code_verifier: codeVerifier,
+    }),
+  }
+
+  const body = await fetch(url, payload);
+  const response = await body.json();
+
+  localStorage.setItem('access_token', response.access_token);
+  if (response.refresh_token) {
+    localStorage.setItem('refresh_token', response.refresh_token);
+  }
+
+}
+
+// der Token läuft nach einer Stunde ab, also wird ein Refresh Token angefordert
+
+const getRefreshToken = async () => {
+
+  // refresh token that has been previously stored
+  const refreshToken = localStorage.getItem('refresh_token');
+  const url = "https://accounts.spotify.com/api/token";
+
+  const payload = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: clientId
+    }),
+  }
+  const body = await fetch(url, payload);
+  const response = await body.json();
+
+  localStorage.setItem('access_token', response.access_token);
+  if (response.refresh_token) {
+    localStorage.setItem('refresh_token', response.refresh_token);
+  }
+}
