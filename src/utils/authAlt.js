@@ -10,7 +10,7 @@ const generateRandomString = (length) => {
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
 
-const codeVerifier  = generateRandomString(64);
+
 
 //Code Challenge, sorgt dafür, dass der Code Verifier nach dem SHA256-Algorithmus hehasht wird
 
@@ -29,47 +29,61 @@ const base64encode = (input) => {
     .replace(/\//g, '_');
 }
 
-// hier wird nun die Code Challenge erstellt:
-const hashed = await sha256(codeVerifier)
-const codeChallenge = base64encode(hashed);
+export const redirectToSpotifyLogin = async () => {
+  const codeVerifier  = generateRandomString(64);
+  // codeVerifier wird gesetzt und im localStorage gespeichert
+  // hier soll er bleiben, denn der Browser wird beim Redirect nach dem Login neu geladen
+  window.localStorage.setItem('code_verifier', codeVerifier);
+  // hier wird nun die Code Challenge erstellt:
+  const hashed = await sha256(codeVerifier)
+  const codeChallenge = base64encode(hashed);
 
-// User Authorizationm wird mit einer GET REquest an https://accounts.spotify.com/authorize angefragt.
+  // User Authorizationm wird mit einer GET REquest an https://accounts.spotify.com/authorize angefragt.
 
-// Die clientId darf nicht öffentlich gemacht werden. Deswegen liegt sie in einer .env-Datei und wird von dort aufgerufen.
-const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+  // Die clientId darf nicht öffentlich gemacht werden. Deswegen liegt sie in einer .env-Datei und wird von dort aufgerufen.
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 
-const scope = 'playlist-modify-private playlist-modify-public';
-const authUrl = new URL("https://accounts.spotify.com/authorize");
+  const scope = 'playlist-modify-private playlist-modify-public';
+  const authUrl = new URL("https://accounts.spotify.com/authorize");
 
-// codeVerifier wird gesetzt und im localStorage gespeichert
-// hier soll er bleiben, denn der Browser wird beim Redirect nach dem Login neu geladen
-window.localStorage.setItem('code_verifier', codeVerifier);
 
-const params =  {
-  response_type: 'code',
-  client_id: clientId,
-  scope,
-  code_challenge_method: 'S256',
-  code_challenge: codeChallenge,
-  redirect_uri: redirectUri,
+
+  const params =  {
+    response_type: 'code',
+    client_id: clientId,
+    scope,
+    code_challenge_method: 'S256',
+    code_challenge: codeChallenge,
+    redirect_uri: redirectUri,
+  }
+
+  authUrl.search = new URLSearchParams(params).toString(); //Objekt params wird in URL-String umgewandelt und an authSearch angehängt
+  window.location.href = authUrl.toString(); // Weiterleitung an die Spotify-Login/Consent-Seite
+
+
+
+  // User wird zu Spotify-Login weitergeleitet, (wenn kein "eingeloggt bleiben" existiert), nach erfolgreichem
+  // Login zu einer Seite, auf der User Jammming den Zugriff auf deren Spotify-Konto erlaubt
+
+  // die Redirect-Uri wird dafür genutzt
+  // außerdem wird in der URL ein Code mitgeschickt, der geparst wird:
+
+  // const urlParams = new URLSearchParams(window.location.search);
+  // let code = urlParams.get('code');
+
+
+
 }
 
-authUrl.search = new URLSearchParams(params).toString(); //Objekt params wird in URL-String umgewandelt und an authSearch angehängt
-window.location.href = authUrl.toString(); // Weiterleitung an die Spotify-Login/Consent-Seite
 
-// User wird zu Spotify-Login weitergeleitet, (wenn kein "eingeloggt bleiben" existiert), nach erfolgreichem
-// Login zu einer Seite, auf der User Jammming den Zugriff auf deren Spotify-Konto erlaubt
-
-// die Redirect-Uri wird dafür genutzt
-// außerdem wird in der URL ein Code mitgeschickt, der geparst wird:
-
-const urlParams = new URLSearchParams(window.location.search);
-let code = urlParams.get('code');
 
 // Access Token anfragen
 
-const getToken = async code => {
+export const getToken = async code => {
+
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 
   // der gespeicherte Code Verifier wird mitgeschickt und von Spotify
   // gehasht und mit der Code Challenge verglichen. 
@@ -91,8 +105,12 @@ const getToken = async code => {
     }),
   }
 
-  const body = await fetch(url, payload);
-  const response = await body.json();
+  const res = await fetch(url, payload);
+  // Error handling
+  if (!res.ok) {
+    throw new Error (`Token-Request fehlgeschlagen: ${res.status} ${res.statusText}`);
+  }
+  const response = await res.json();
 
   localStorage.setItem('access_token', response.access_token);
   if (response.refresh_token) {
@@ -101,11 +119,13 @@ const getToken = async code => {
 
 }
 
-// der Token läuft nach einer Stunde ab, also wird ein Refresh Token angefordert
+// das Token läuft nach einer Stunde ab, also wird ein Refresh Token angefordert
 
-const getRefreshToken = async () => {
+export const getRefreshToken = async () => {
 
-  // refresh token that has been previously stored
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+
+  // Refresh-Token wurde in getToken() gespeichert
   const refreshToken = localStorage.getItem('refresh_token');
   const url = "https://accounts.spotify.com/api/token";
 
@@ -120,11 +140,17 @@ const getRefreshToken = async () => {
       client_id: clientId
     }),
   }
-  const body = await fetch(url, payload);
-  const response = await body.json();
+  const res = await fetch(url, payload);
+  // Error Handling
+  if (!res.ok) {
+    throw new Error (`Token-Refresh fehlgeschlagen: ${res.status} ${res.statusText}`);
+  }
+  const response = await res.json();
 
   localStorage.setItem('access_token', response.access_token);
   if (response.refresh_token) {
     localStorage.setItem('refresh_token', response.refresh_token);
   }
 }
+
+
