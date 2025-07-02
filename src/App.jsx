@@ -4,6 +4,7 @@ import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
 import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
+import SpotifyLogin from './components/SpotifyLogin/SpotifyLogin';
 import { getToken, redirectToSpotifyLogin, refreshAccessToken } from './utils/spotifyAuth';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -123,12 +124,14 @@ function App() {
   }
 
   return (
+    
     <div className={styles.appWrapper}>
       <div >
         {/* Logos, Hintergründe etc */}
       </div>
       <h1>Ja<span className={styles.redText}>mmm</span>ing</h1>
       <ThemeToggle /> 
+      <SpotifyLogin />
 
       <div>
         <SearchBar searchSpotify={searchSpotify} />

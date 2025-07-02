@@ -69,8 +69,7 @@ export const redirectToSpotifyLogin = async () => {
   // die Redirect-Uri wird dafür genutzt
   // außerdem wird in der URL ein Code mitgeschickt, der geparst wird:
 
-  // const urlParams = new URLSearchParams(window.location.search);
-  // let code = urlParams.get('code');
+
 
 
 

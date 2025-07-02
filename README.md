@@ -78,9 +78,9 @@ Ich habe gelernt, dass es besser ist, module.css bei den Komponenten zu verwende
 Bleibt eine "normale" CSS-Datei und legt globale Angaben fest, wie Hintergrund und Aussehen im Light- und Darkmode etwa.
 
 
-## API-Anschluss
+## API-Anbindung
 ### OAuth 2.0-Flows
-Mit diesem Protokoll zur Autorisierung kann eine App im Namen eines Nutzers auf bestimmte Ressource zurückgreifen, wie in diesem Fall, eine Playlist im Account des Neutzers zu speichern. Dafür stimmt der Nutzer zu, indem er sich authentifiziert.
+Mit diesem Protokoll zur Autorisierung kann eine App im Namen eines Nutzers auf bestimmte Ressource zurückgreifen, wie in diesem Fall, eine Playlist im Account des Nutzers zu speichern. Dafür stimmt der Nutzer zu, indem er sich authentifiziert.
 
 ### Authorization Code Flow mit PKCE
 Es gibt zwei Verfahren, mit denen die App Nutzern Zugriff auf ihre Spotify-Daten gewähren lassen kann, ohne deren Daten speichern zu müssen.
@@ -107,6 +107,12 @@ HTTP-POST-Anfrage wird an Spotify (Endpoint /token) gesendet, mit Parametern wie
 #### Client-ID und Redirect-URI nicht öffentlich machen
 Auf Spotify habe ich meine App angemeldet und eine Client-ID erhalten. Die darf nicht öffentlich preisgegeben werden. Besser ist es auch, die Redirect-URI nicht öffentlich zu zeigen.
 Im Root-Verzeichnis erstelle ich eine .env-Datei und speichere dort beides unter VITE_SPOTIFY_CLIENT_ID und VITE_SPOTIFY_REDIRECT_URI ab. Die .env-Datei trage ich in der Datei .gitignore ein.
+
+#### Probleme beim Login!!!
+... die mich seit Wochen wahnsinnig machen! Der Code Verifier wird zunächst im local Storage gespeichert, doch nach der Weiterleitung ist der localStorage leer und die Konsole meckert, dass kein Code Verifier da ist. (Der Suchbegriff geht ebenfalls verloren) Mit einem zweiten Login funktioniert es allerdings. Nach mehreren Versuchen, z. B. das mit Session Storage zu umgehen und Funktionen umzustellen, bleibt es dasselbe Problem.
+
+#### authAlt.js und Komponente SpotifyLogin zum Testen
+Um noch mal ganz genau die Schritte nachzuvollziehen, die der Auth Flow mit PKCE beinhaltet, habe ich noch einmal das Modul neu aufgesetzt. Außerdem wollte ich an der bereits vorhandenen Logik  "vorbei arbeiten" und daran nicht weiter herumfummeln. Ein Neustart sozusagen. In SpotifyLogin.jsx habe ich daher nur eine Minimallösung für einen Button gebaut. Übersichtlich, aber ... wieder dasselbe Problem! Ich lasse beide Dateien mit entsprechenden Kommentaren drin.
 
 ## Datenschutzerklärung
 
