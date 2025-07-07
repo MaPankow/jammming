@@ -31,9 +31,9 @@ const base64encode = (input) => {
 
 export const redirectToSpotifyLogin = async () => {
   const codeVerifier  = generateRandomString(64);
-  // codeVerifier wird gesetzt und im localStorage gespeichert
+  // codeVerifier wird gesetzt und im sessionStorage gespeichert
   // hier soll er bleiben, denn der Browser wird beim Redirect nach dem Login neu geladen
-  window.localStorage.setItem('code_verifier', codeVerifier);
+  window.sessionStorage.setItem('code_verifier', codeVerifier);
   // hier wird nun die Code Challenge erstellt:
   const hashed = await sha256(codeVerifier)
   const codeChallenge = base64encode(hashed);
@@ -87,7 +87,7 @@ export const getToken = async code => {
   // der gespeicherte Code Verifier wird mitgeschickt und von Spotify
   // gehasht und mit der Code Challenge verglichen. 
   // Um ein Access Token zu erhalten, muss das Ergebnis mit der Code Challenge übereinstimmen.
-  const codeVerifier = localStorage.getItem('code_verifier');
+  const codeVerifier = sessionStorage.getItem('code_verifier');
 
   const url = "https://accounts.spotify.com/api/token";
   const payload = {

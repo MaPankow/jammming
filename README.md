@@ -114,6 +114,16 @@ Im Root-Verzeichnis erstelle ich eine .env-Datei und speichere dort beides unter
 #### authAlt.js und Komponente SpotifyLogin zum Testen
 Um noch mal ganz genau die Schritte nachzuvollziehen, die der Auth Flow mit PKCE beinhaltet, habe ich noch einmal das Modul neu aufgesetzt. Außerdem wollte ich an der bereits vorhandenen Logik  "vorbei arbeiten" und daran nicht weiter herumfummeln. Ein Neustart sozusagen. In SpotifyLogin.jsx habe ich daher nur eine Minimallösung für einen Button gebaut. Übersichtlich, aber ... wieder dasselbe Problem! Ich lasse beide Dateien mit entsprechenden Kommentaren drin.
 
+#### Mit einem Tunnel doppelten Login umgehen
+Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit http arbeitet und Spotify den Zugang beschränkt. Um das zu umgehen, gibt es eine (zugegebenermaßen etwas aufwendige) Lösung über einen Tunnel mit ngrok. Dazu führe ich folgende Schritte aus.
+
+1. Code Verifier im SessionStorage speichern, statt localStorage (damit der Verifier im selben Tab sicher bleibt, was bei OAuth-Redirects wichtig ist, denn sessionStorage ist nur für diesen Tab und verhindert Probleme durch mehrere Tabs oder Fenster)
+2. Server starten mit: npm run dev (wie immer)
+3. Anderes Terminalfenster öffnen, ngrok starten mit: ngrok http 5173
+4.  Die URL, die ngrok ausgibt, zeigt nun dasselbe wie http://localhost:5173, aber mit https. Dadurch akzeptiert Spotify die Adresse für den Auth-Flow. Diese Adresse + /callback wird als Callback-Uri sowohl bei Spotify dev eingetragen (Speichern nicht vergessen zur Vermeidung von Nervenzusammenbrüchen), sowie in der eigenen .env
+5. Die ngrok-Adresse (ohne /callback) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
+6. Das Ganze wiederhole ich jedes Mal, wenn ich Jammming benutzen oder daran weiterbasteln will, weil sich die ngrok-Adresse im Free-Plan bei jedem Start ändert.
+
 ## Datenschutzerklärung
 
 Diese App läuft nur lokal (localhost) und speichert keine persönlichen Daten.
