@@ -121,7 +121,7 @@ Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit h
 2. Server starten mit: npm run dev (wie immer)
 3. Anderes Terminalfenster öffnen, ngrok starten mit: ngrok http 5173
 4.  Die URL, die ngrok ausgibt, zeigt nun dasselbe wie http://localhost:5173, aber mit https. Dadurch akzeptiert Spotify die Adresse für den Auth-Flow. Diese Adresse + /callback wird als Callback-Uri sowohl bei Spotify dev eingetragen (Speichern nicht vergessen zur Vermeidung von Nervenzusammenbrüchen), sowie in der eigenen .env
-5. Die ngrok-Adresse (ohne /callback) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
+5. Die ngrok-Adresse (ohne /callback und ohne https://) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
 6. Das Ganze wiederhole ich jedes Mal, wenn ich Jammming benutzen oder daran weiterbasteln will, weil sich die ngrok-Adresse im Free-Plan bei jedem Start ändert.
 
 ## Datenschutzerklärung

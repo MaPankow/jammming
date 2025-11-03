@@ -3,9 +3,6 @@ import Tracklist from '../Tracklist/Tracklist';
 
 function SearchResults ({ tracks, onAdd }) {
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-    }
     
     return (
         <div className="searchResults">

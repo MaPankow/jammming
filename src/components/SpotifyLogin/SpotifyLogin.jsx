@@ -26,6 +26,15 @@ export default function SpotifyLogin() {
                 const accessToken = localStorage.getItem("access_token");
                 setToken(accessToken);
                 window.history.replaceState({}, document.title, "/"); // URL bereinigen
+
+                    // Automatischer Refresh nach 55 Minuten (etwas unter 3600 Sekunden)
+                    setTimeout(() => {
+                        getRefreshToken().then(() => {
+                        const newToken = localStorage.getItem("access_token");
+                        setToken(newToken);
+                        console.log("Access Token automatisch erneuert");
+                        });
+                    }, 55 * 60 * 1000);
             }).catch((e) => {
                 console.error("Fehler beim Abrufen des Tokens", e)
             });
