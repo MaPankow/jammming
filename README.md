@@ -117,12 +117,12 @@ Um noch mal ganz genau die Schritte nachzuvollziehen, die der Auth Flow mit PKCE
 #### Mit einem Tunnel doppelten Login umgehen
 Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit http arbeitet und Spotify den Zugang beschränkt. Um das zu umgehen, gibt es eine (zugegebenermaßen etwas aufwendige) Lösung über einen Tunnel mit ngrok. Dazu führe ich folgende Schritte aus.
 
-1. Code Verifier im SessionStorage speichern, statt localStorage (damit der Verifier im selben Tab sicher bleibt, was bei OAuth-Redirects wichtig ist, denn sessionStorage ist nur für diesen Tab und verhindert Probleme durch mehrere Tabs oder Fenster)
-2. Server starten mit: npm run dev (wie immer)
-3. Anderes Terminalfenster öffnen, ngrok starten mit: ngrok http 5173
-4.  Die URL, die ngrok ausgibt, zeigt nun dasselbe wie http://localhost:5173, aber mit https. Dadurch akzeptiert Spotify die Adresse für den Auth-Flow. Diese Adresse + /callback wird als Callback-Uri sowohl bei Spotify dev eingetragen (Speichern nicht vergessen zur Vermeidung von Nervenzusammenbrüchen), sowie in der eigenen .env
-5. Die ngrok-Adresse (ohne /callback und ohne https://) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
-6. Das Ganze wiederhole ich jedes Mal, wenn ich Jammming benutzen oder daran weiterbasteln will, weil sich die ngrok-Adresse im Free-Plan bei jedem Start ändert.
+
+1. Server starten mit: npm run dev (wie immer)
+2. Anderes Terminalfenster öffnen, ngrok starten mit: ngrok http 5173
+3.  Die URL, die ngrok ausgibt, zeigt nun dasselbe wie http://localhost:5173, aber mit https. Dadurch akzeptiert Spotify die Adresse für den Auth-Flow. Diese Adresse + /callback wird als Callback-Uri sowohl bei Spotify dev eingetragen (Speichern nicht vergessen zur Vermeidung von Nervenzusammenbrüchen), sowie in der eigenen .env
+4. Die ngrok-Adresse (ohne /callback und ohne https://) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
+5. Das Ganze wiederhole ich jedes Mal, wenn ich Jammming benutzen oder daran weiterbasteln will, weil sich die ngrok-Adresse im Free-Plan bei jedem Start ändert.
 
 ## Datenschutzerklärung
 

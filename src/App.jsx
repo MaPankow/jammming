@@ -5,7 +5,7 @@ import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
 import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
 import SpotifyLogin from './components/SpotifyLogin/SpotifyLogin';
-import { getToken, redirectToSpotifyLogin, refreshAccessToken } from './utils/spotifyAuth';
+import { getToken, redirectToSpotifyLogin, getRefreshToken } from './utils/authAlt';
 import { useState, useEffect, useCallback } from 'react';
 
 
@@ -38,7 +38,7 @@ function App() {
     const data = await response.json();
 
     if (data.error && data.error.status === 401) {
-      const newToken = await refreshAccessToken();
+      const newToken = await getRefreshToken();
       if (newToken) {
         setToken(newToken);
         return searchSpotify(term);
@@ -99,10 +99,6 @@ function App() {
 
 
 
-  const saveToSpotify = (playlist) => {
-    playlist = "My Playlist";
-    console.log(`Saved ${playlist} to Spotify`);
-  };
 
   const handleAddToPlaylist = (track) => {
     const alreadyInPlaylist = playlistTracks.some(t => t.id === track.id);
@@ -121,6 +117,10 @@ function App() {
       console.log("Track removed", track);
     }
 
+  }
+
+  const handleSaveToSpotify = (playlistData, playlistName) => {
+    
   }
 
   return (
