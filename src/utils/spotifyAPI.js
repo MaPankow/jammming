@@ -12,9 +12,8 @@ export async function getUserId() {
 
     if (!result.ok) throw new Error(`Fehler beim Laden des Profils: ${result.status}`);
     const userData = await result.json();
-    const userId = userData.id;
+    return userData.id;
 
-    return userId;
 }   
 
 export async function createPlaylist(userId, playlistName) {
@@ -37,4 +36,35 @@ export async function createPlaylist(userId, playlistName) {
     if (!response.ok) throw new Error(`Fehler beim Erstellen der Playlist (SpotifyAPI.js, createPlaylist): ${response.status}`);
     const playlistData = await response.json();
     return playlistData;
+}
+
+export async function addTracksToPlaylist(playlistId, trackUris) {
+    const token = getStoredToken();
+    if (!token) throw new Error("SpotifyAPI.js, addTracksToPlaylist: kein gespeichertes Token gefunden!");
+
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uris: trackUris }),
+    });
+
+    if (!response.ok) throw new Error(`Fehler beim Hinzufügen der Tracks (SpotifyAPI.js, addTracksToPlaylist): ${response.status}`);
+    const result = await response.json();
+    return result;
+}
+
+// Hilfsfunktion, um Playlist-Name und Playlist-Tracks zusammenzuführen
+export async function savePlaylistToSpotify(playlistName, trackUris) {
+
+    const userId = await getUserId();
+    const newPlaylist = await createPlaylist(userId, playlistName);
+
+    if (trackUris && trackUris.length > 0) {
+        await addTracksToPlaylist(newPlaylist.id, trackUris);
+    }
+
+    return newPlaylist;
 }

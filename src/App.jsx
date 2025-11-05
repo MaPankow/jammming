@@ -3,7 +3,6 @@ import styles from './App.module.css';
 import SearchResults from './components/SearchResults/SearchResults';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import Playlist from './components/Playlist/Playlist';
-import SaveToSpotify from './components/SaveToSpotify/SaveToSpotify';
 import SpotifyLogin from './components/SpotifyLogin/SpotifyLogin';
 import { getToken, redirectToSpotifyLogin, getRefreshToken } from './utils/authAlt';
 import { useState, useEffect, useCallback } from 'react';
@@ -119,9 +118,6 @@ function App() {
 
   }
 
-  const handleSaveToSpotify = (playlistData, playlistName) => {
-    
-  }
 
   return (
     
