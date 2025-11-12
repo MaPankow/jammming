@@ -64,6 +64,13 @@ Dient als Grundlage für sämtliche Aufzählungen von Tracks, wie hier bei den S
 Nachdem per Titel gesucht worden ist, werden die Ergebnisse angezeigt.
 
 ### Playlist.jsx
+Verbindet den Playlistnamen mit der Tracklist-Komponente und der SaveToSpotify-Komponente, die die Logik enthält, um die Playlist bei Spotify zu speichern.
+
+### PlaylistNameInput.jsx
+Sorgt dafür, dass man der Playlist einen Namen geben kann.
+
+### SaveToSpotify.jsx
+Enthält den Event-Handler für den Submit-Button und fängt Fehler beim Speichern ab. Führt die Informationen so zusammen, dass sie an die API gesendet werden können. Kommuniziert mit SpotifyAPI.js.
 
 ### ThemeToggle
 Stellt einen Button zur Verfügung, mit dem von Light- in den Darkmode gewechselt werden kann. Emojis können direkt im Code verwendet werden. Bei https://emojipedia.org kann man sie zum Beispiel finden und kopieren.
@@ -123,6 +130,9 @@ Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit h
 3.  Die URL, die ngrok ausgibt, zeigt nun dasselbe wie http://localhost:5173, aber mit https. Dadurch akzeptiert Spotify die Adresse für den Auth-Flow. Diese Adresse + /callback wird als Callback-Uri sowohl bei Spotify dev eingetragen (Speichern nicht vergessen zur Vermeidung von Nervenzusammenbrüchen), sowie in der eigenen .env
 4. Die ngrok-Adresse (ohne /callback und ohne https://) in der vite.config.js bei allowedHosts eintragen, damit Vite Zugriffe von ngrok erlaubt.
 5. Das Ganze wiederhole ich jedes Mal, wenn ich Jammming benutzen oder daran weiterbasteln will, weil sich die ngrok-Adresse im Free-Plan bei jedem Start ändert.
+
+### spotifyAPI.js
+Kommuniziert mit der API und ruft über das Token die UserId ab, um eine POST-Anfrage an das Konto zu stellen. Die Playlist wird an das User-Konto gesendet.
 
 ## Datenschutzerklärung
 
