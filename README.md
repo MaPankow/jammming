@@ -134,6 +134,19 @@ Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit h
 ### spotifyAPI.js
 Kommuniziert mit der API und ruft über das Token die UserId ab, um eine POST-Anfrage an das Konto zu stellen. Die Playlist wird an das User-Konto gesendet.
 
+## Testing
+Ich nutze die App, um zu lernen, wie man Tests schreibt und anwendet. In React + Vite wird dafür Vitest genutzt, eine Text-Umgebung, die zuerst zusätzlich installiert werden muss:
+
+```
+npm install --save-dev vitest
+```
+
+Und speziell zum Testen von Komponenten:
+
+```
+npm install --save-dev @testing-library/react
+```
+
 ## Datenschutzerklärung
 
 Diese App läuft nur lokal (localhost) und speichert keine persönlichen Daten.
