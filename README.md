@@ -135,7 +135,9 @@ Die Probleme entstehen vermutlich dadurch, dass man auf dem lokalen Server mit h
 Kommuniziert mit der API und ruft über das Token die UserId ab, um eine POST-Anfrage an das Konto zu stellen. Die Playlist wird an das User-Konto gesendet.
 
 ## Testing
-Ich nutze die App, um zu lernen, wie man Tests schreibt und anwendet. In React + Vite wird dafür Vitest genutzt, eine Text-Umgebung, die zuerst zusätzlich installiert werden muss:
+
+### Vitest-Setup
+Als nächstes nutze ich die App, um zu lernen, wie man Tests schreibt und anwendet. In React + Vite wird dafür Vitest genutzt, ein Test-Runner, die zuerst  installiert werden muss:
 
 ```
 npm install --save-dev vitest
@@ -146,6 +148,32 @@ Und speziell zum Testen von Komponenten:
 ```
 npm install --save-dev @testing-library/react
 ```
+
+Als nächstes installiere ich jsdom, das für die Tests einen Browser simuliert:
+```
+npm install --save-dev jsdom
+```
+
+Um zusätzliche DOM-Assertions (z. B. toBeInTheDocument) nutzen zu können, installiere ich jest-dom:
+```
+npm install --save-dev @testing-library/jest-dom
+```
+
+Zum Simulieren von echtem Nutzer*innenverhalten installiere ich User-Event:
+```
+npm install --save-dev @testing-library/user-event
+```
+
+Vite braucht noch ein Plugin, um die Tests bzw. die Funktionen von jest-dom richtig verarbeiten zu können:
+Das installiere ich mit
+```
+npm install --save-dev @vitejs/plugin-react
+```
+Damit Vitest mit Vite und React richtig funktioniert, lege ich zwei Dateien an:
+
+- vitest.config.js: konfiguriert Vitest, z. B. welche Dateien als Tests erkannt werden, welche Umgebung genutzt wird und welche Setup-Datei geladen wird.
+
+- vitest.setup.js: wird vor allen Tests ausgeführt, z. B. um @testing-library/jest-dom zu importieren oder globale Mocks/Variablen zu definieren.
 
 ## Datenschutzerklärung
 
