@@ -5,14 +5,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 
 it('switches text on click', () => {
   render (<ThemeToggle />);
-  const button = screen.getByText('☀️ Light Mode');
+  let button = screen.getByText('☀️ Light Mode');
   expect(button).toBeInTheDocument();
+  expect(document.documentElement).not.toHaveClass('light');
+  // testet, ob Dark Mode eingestellt ist und der Text auf dem Button 'Light Mode' zeigt (Initialzustand)
 
   fireEvent.click(button);
+  button = screen.getByText('🌙 Dark Mode');
+  expect(button).toBeInTheDocument();
+  expect(document.documentElement).toHaveClass('light');
+  // testet, ob nach dem Klick Light Mode eingestellt ist und der Text auf dem Button 'Dark Mode' zeigt
 
-  const darkButton = screen.getByText('🌙 Dark Mode');
-  expect(darkButton).toBeInTheDocument();
+  fireEvent.click(button);
+  button = screen.getByText('☀️ Light Mode');
+  expect(button).toBeInTheDocument();
+  expect(document.documentElement).not.toHaveClass('light');
 });
-// Test 1 beenden: zurück zu Light Mode switchen und wieder zu Dark Mode
-// Test 2: Checkt den Wechsel zum Dark-Mode
-// Zwei Tests dann in ein "describe" einwickeln, damit Fehler beim Testen besser gefunden werden können
+
