@@ -41,5 +41,3 @@ function Track ({ track, onAction, actionLabel }) {
 
 export default Track;
 
-// jsx:
-// <p>{track.name} – {track.artists[0].name} ({track.album.name})</p>
