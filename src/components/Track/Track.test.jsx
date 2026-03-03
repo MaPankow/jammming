@@ -1,6 +1,6 @@
 import Track from './Track';
-import { render, screen, fireEvent } from '@testing-library/react';
-
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event'
 describe('Track component', () => {
 
     const mockTrack = {
@@ -26,7 +26,7 @@ describe('Track component', () => {
         expect(screen.getByText(/Test Album/)).toBeInTheDocument();
     });
 
-    it('calls onAction with track when button is clicked', () => {
+    it('calls onAction with track when button is clicked', async () => {
     const mockOnAction = vi.fn();
 
     render(
@@ -37,7 +37,9 @@ describe('Track component', () => {
       />
     );
 
-    fireEvent.click(screen.getByRole('button'));
+    const button = screen.getByRole('button');
+
+    await userEvent.click(button);
 
     expect(mockOnAction).toHaveBeenCalledWith(mockTrack);
   });
