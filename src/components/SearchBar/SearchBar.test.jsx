@@ -28,6 +28,15 @@ describe('Search Bar component', () => {
         expect(input).toHaveValue("Muse");
     });
     
+    it('calls searchSpotify when form is submitted', async () => {
+        const input = screen.getByLabelText(/browse tracks:/i);
+        const button = screen.getByRole("button", { name: /search/i });
+        
+        await user.type(input, "Muse");
+        await user.click(button);
+
+        expect(mockSearchSpotify).toHaveBeenCalledWith("Muse");
+    });
 })
 
 
