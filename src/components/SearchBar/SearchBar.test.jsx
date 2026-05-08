@@ -60,6 +60,16 @@ describe("Search Bar component", () => {
 
         expect(localStorage.getItem("last_search_term")).toBe("Muse");
     });
+
+    it ('prevents search if input is empty',  async() => {
+        const { user, input, button, mockSearchSpotify } = setup();
+
+        await user.type(input, " ");
+        await user.click(button);
+
+        expect(mockSearchSpotify).not.toHaveBeenCalledWith();
+        expect(localStorage.getItem("last_search_term")).toBeNull();
+    })
 })
 
 
