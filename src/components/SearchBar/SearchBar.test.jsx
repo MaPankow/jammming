@@ -69,22 +69,7 @@ describe("Search Bar component", () => {
 
         expect(mockSearchSpotify).not.toHaveBeenCalledWith();
         expect(localStorage.getItem("last_search_term")).toBeNull();
-    })
+    });
 })
 
 
-// Notizen für Testmethoden:
-
-// describe('Search Bar component', () => {
-
-//   it('renders search bar correctly')
-
-//   it('allows user to type into the input field')
-
-//   it('calls searchSpotify when form is submitted')
-
-//   it('stores the search term in localStorage')
-
-//   it('prevents search if input is empty')
-
-// })
