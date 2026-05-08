@@ -2,6 +2,15 @@ import SearchBar from "./SearchBar";
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
+
+beforeEach(() => {
+    localStorage.clear();
+});
+
+afterEach(() => {
+    localStorage.clear();
+});
+
 const setup = () => {
     const user = userEvent.setup()
     const mockSearchSpotify = vi.fn();
@@ -41,6 +50,15 @@ describe("Search Bar component", () => {
         await user.click(button);
 
         expect(mockSearchSpotify).toHaveBeenCalledWith("Muse");
+    });
+
+    it('stores the search term in localStorage', async () => {
+        const { user, input, button } = setup();
+        
+        await user.type(input, "Muse");
+        await user.click(button);
+
+        expect(localStorage.getItem("last_search_term")).toBe("Muse");
     });
 })
 
